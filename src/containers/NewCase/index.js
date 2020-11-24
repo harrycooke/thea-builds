@@ -57,31 +57,23 @@ import moment from "moment";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 
-//TODO: delete these
-
-
-import InboxIcon from '@material-ui/icons/AddAPhoto';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import SendIcon from '@material-ui/icons/Send';
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const {remote, desktopCapturer, shell, nativeImage} = window.require('electron');
-//
+
 const {getAppIconListByPid} = require('node-mac-app-icon');
 const {getWindows, activateWindow} = require('mac-windows');
 
+
+//Delete??
 const getOpenWindows = async () => {
   const {getWindowList} = remote.require('./windows');
-  //console.log(require.resolve.paths('./electron/windows'));
   var path = require('path');
   console.log(path.resolve('./electron/windows.js'));
   const windows = await getWindowList();
   return windows
-  //console.log("menu " + menu);
-  //console.log(menu);
 
 };
 
@@ -123,9 +115,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-//const remote = electron.remote || false;
-
-
 export class NewCase extends React.Component {
 
   constructor(props) {
@@ -165,7 +154,6 @@ export class NewCase extends React.Component {
       open: false,
       anchorEl: null,
       windows: [],
-      //openAlert: false,
     }
     return initialState;
   }
@@ -181,33 +169,9 @@ export class NewCase extends React.Component {
     }
     getOpenWindows();
     this.getWindowsList();
-    //console.log(    getWindowsTest());
-    /*const currentUserData = {
-      currentUserId: this.props.auth.id,
-      currentUserRole: this.props.auth.user_type
-    }
-
-    setTimeout(() => {
-      console.log("getting patients")
-      console.log(this.props.auth);
-      this.props.getUserPatients(currentUserData);
-    }, 500)*/
-
-    // window.addEventListener("beforeunload", (ev) => {
-    //   ev.preventDefault();
-    //   const { specialty, specialist_id, patientName, question, files, fileUrls, isChecked } = this.state;
-    //   if (specialty !== '' || patientName !== '' || question !== '' || isEmpty(files) === false) {
-    //     // this.handleSaveDraft();
-    //     return ev.returnValue = 'Are you sure you want to close?';
-    //   }
-    // });
-
     if(this.props.case.patientList && this.props.case.patientList.length != 0){
       this.setState({patientList: this.props.case.patientList});
       console.log("got patients");
-      // console.log(this.props.case.patientList);
-      // console.log(this.state.patientList);
-
     } else{
       console.log("didn't get patients")
 
@@ -216,16 +180,9 @@ export class NewCase extends React.Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.currentDraft !== this.props.currentDraft) {
-      //let draftFiles = [];
-
       const { currentDraft } = nextProps;
       if (currentDraft.draftData.files) {
         for (let i = 0; i < currentDraft.draftData.files.length; i++) {
-          //draftFiles[i] = JSON.parse(currentDraft.draftData.files[i]);
-          //console.log(draftFiles[i])
-          // console.log("draft file " + i + " " + currentDraft.draftData.files[i])
-          // console.log(currentDraft.draftData.files[i])
-
           this.getThumbnail(currentDraft.draftData.files[i])
         }
 
@@ -246,16 +203,11 @@ export class NewCase extends React.Component {
         files: currentDraft.draftData.files,
         fileUrls: [],
         labelWidth: 0,
-        //errors: {},
         success: false,
         isSubmitting: false,
         client: socket(),
-        //isChecked: currentDraft.draftData.patient_consent_given && currentDraft.draftData.patient_consent_given
         isChecked: false
       })
-      //console.log("current draftdata files " + currentDraft.draftData.files);
-
-      //console.log(currentDraft.draftData.files);
     }
 
     if (nextProps.case.patientList) {
@@ -278,13 +230,8 @@ export class NewCase extends React.Component {
   }
 
   getThumbnail = async (file) => {
-
     const fileResponse = await getSignedUrl('get', file.name) //import get signed url from utils/s3.js
-
     const url = fileResponse.data.url;
-    // console.log("got url " + url);
-    // console.log(url);
-
     this.setState({ fileUrls: [...this.state.fileUrls, url] });
   }
   
@@ -373,20 +320,12 @@ export class NewCase extends React.Component {
 
 
   specialtyOnBlur = (e) =>{
-    //console.log('blur', e.target.value);
     this.setState({
       specialty: e.target.value
     });
   }
 
   handlePatientNameChange = (e, opt) => {
-
-     /*this.setState({
-        patientName: e.target.value
-    })      });*/
-    //console.log('opt', opt);
-    // console.log(opt);
-
     if(opt && opt.id !== ''){
       this.setState({
         patient_id: opt.id,
@@ -394,13 +333,9 @@ export class NewCase extends React.Component {
       });
 
       if(opt.dob !== ''){
-        // console.log(opt.dob);
-        // console.log(typeof opt.dob);
-
         this.setState({
           dob: opt.dob
         });
-        // console.log(this.state.dob);
       }
     } 
   } 
@@ -419,9 +354,6 @@ export class NewCase extends React.Component {
   }
 
   setDOB(event, date){
-    // console.log('event:', event, ' date:', date);
-
-    // console.log(typeof date);
     this.setState({
       dob: date
     })
@@ -429,19 +361,10 @@ export class NewCase extends React.Component {
 
 //----- Check patient -----//
   handleOnBlur = (e) =>{
-
-    // console.log('blur', e.target.value);    
-
     let patientData = {
       fullName: e.target.value
     }
-    /*axios.post(getServerUrl() + '/api/v1/patient/savePatient', patientData)
-      .then(res => {
-        console.log(res.data,'=======', res.status)
-      })
-      .catch(err => {
-        console.log(err,'-------')
-      })*/
+
 
     this.setState({
       patientName: e.target.value
@@ -453,12 +376,10 @@ export class NewCase extends React.Component {
     this.setState({
       question: e.target.value,
     })
-    //console.log(this.state);
   }
 
   handleFileUpload = async newFile => {
     this.setState({ isLoading: true })
-    //sendAmplitudeData('Add images to a case');
     if (newFile && newFile.length) {
       for (let i = 0; i < newFile.length; i++) {
         const [promiseFile, promiseUrl] = await uploadFile(newFile[i]);
@@ -502,7 +423,6 @@ export class NewCase extends React.Component {
 
 
   handleSubmit = async event => {
-    //event.preventDefault();
     const { specialist_id, specialty, patientName, question, files, isChecked, isDraft, draftId, dob, patient_id, addToCase } = this.state;
 
     if (specialist_id !== '' && specialty !== '' && patientName !== '' && dob && dob !== '' && isChecked === true) {
@@ -514,12 +434,6 @@ export class NewCase extends React.Component {
       const current_time = new Date();
       const current_timestamp = current_time.getTime();
       const case_id = generateCaseID(patientName, current_timestamp);
-
-      // const promise = await Promise.all(files.map(async (file) => {
-      //   return await uploadFile(file);
-      // }));
-      // promise.map(path => fileUrls.push(path))
-
       let dateofbirth = moment(dob).format('YYYY-MM-DD');
 
       const newCase = {
@@ -554,12 +468,6 @@ export class NewCase extends React.Component {
         this.props.setSnackbar(true);
         this.goBack();
       });
-      // this.setState({
-      //   files: [],
-      //   fileUrls: []
-      // });
-      //this.setState({ isSubmitting: false})
-      
     } else {
       if (specialty === '') {
         let errors = {
@@ -617,17 +525,9 @@ export class NewCase extends React.Component {
 
 
   handleMenuClick = (event) => {
-        //this.getWindowsList();
-    console.log("1 anchorEl = " + this.state.anchorEl);
-    console.log("CLLLLLIIIICCCK");
-
     this.setState({
       anchorEl: event.currentTarget
     })
-
-    console.log("anchorEl = " + this.state.anchorEl);
-    //this.getWindowsList();
-
   }
 
 
@@ -1045,7 +945,7 @@ export class NewCase extends React.Component {
                 
                 <Card elevation={3} margin={0} padding={0} alignItems="center" >
 
-
+//add commit here
 
                   <div style={{ minHeight: 100 }}>
                     <DropzonePlugin
