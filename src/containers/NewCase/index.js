@@ -941,8 +941,6 @@ export class NewCase extends React.Component {
                 
                 <Card elevation={3} margin={0} padding={0} alignItems="center" >
 
-//add commit here
-
                   <div style={{ minHeight: 100 }}>
                     <DropzonePlugin
                       removeFile={this.removeFile}

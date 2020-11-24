@@ -9,6 +9,8 @@ import { LocalizeProvider } from 'react-localize-redux'
 import App from "./App";
 import store from "./store";
 import { initAmplitude } from './utils/amplitude';
+import "fontsource-open-sans"
+
 
 initAmplitude();
 
