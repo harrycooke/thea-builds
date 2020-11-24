@@ -74,7 +74,6 @@ const getOpenWindows = async () => {
   console.log(path.resolve('./electron/windows.js'));
   const windows = await getWindowList();
   return windows
-
 };
 
 const StyledMenuItem = withStyles((theme) => ({
@@ -91,9 +90,6 @@ const StyledMenuItem = withStyles((theme) => ({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // ...theme.typography.button,
-    // backgroundColor: theme.palette.background.paper,
-    // padding: theme.spacing(1),
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
