@@ -1,21 +1,97 @@
 {
   "name": "thea-electron",
+  "productName": "Thea Health",
+  "description": "A communication platform for healthcare providers",
+  "author": "Thea Health Inc",
+  "main": "electron/main.js",
+  "homepage": "./",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.6",
-    "@testing-library/react": "^11.2.1",
-    "@testing-library/user-event": "^12.2.2",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-scripts": "4.0.0",
-    "web-vitals": "^0.2.4"
+    "@date-io/moment": "^1.3.13",
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "4.2.0",
+    "@material-ui/lab": "^4.0.0-alpha.15",
+    "@react-pdf/renderer": "^1.6.7",
+    "@stripe/react-stripe-js": "^1.0.0",
+    "@stripe/stripe-js": "^1.0.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "amplitude-js": "^5.3.1",
+    "apexcharts": "^3.8.1",
+    "axios": "^0.19.0",
+    "base-64": "^0.1.0",
+    "chart.js": "^2.9.3",
+    "classnames": "^2.2.6",
+    "date-fns": "^2.0.0-alpha.27",
+    "electron-store": "^6.0.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "html2pdf.js": "^0.9.1",
+    "is-empty": "^1.2.0",
+    "jwt-decode": "^2.2.0",
+    "lodash": "^4.17.19",
+    "lodash.throttle": "^4.1.1",
+    "mac-windows": "^1.0.0",
+    "material-table": "^1.40.1",
+    "material-ui-dropzone": "^2.3.5",
+    "material-ui-image": "^3.2.0",
+    "mixpanel-browser": "^2.38.0",
+    "moment": "^2.24.0",
+    "node-mac-app-icon": "^1.4.0",
+    "papaparse": "^5.1.0",
+    "react": "^16.13.1",
+    "react-apexcharts": "^1.3.3",
+    "react-cookie": "^4.0.3",
+    "react-device-detect": "^1.11.14",
+    "react-dom": "^16.13.1",
+    "react-dropzone": "^10.1.5",
+    "react-idle-timer": "^4.2.11",
+    "react-localize-redux": "^3.5.3",
+    "react-media": "^1.10.0",
+    "react-pdf": "^4.1.0",
+    "react-redux": "^7.1.0",
+    "react-router": "5.0.1",
+    "react-router-dom": "5.0.1",
+    "react-s3": "^1.3.1",
+    "react-scripts": "^3.4.3",
+    "react-sweet-progress": "^1.1.2",
+    "react-test-renderer": "^16.13.1",
+    "redux": "^4.0.1",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-logger": "3.0.6",
+    "redux-promise": "^0.6.0",
+    "redux-thunk": "2.3.0",
+    "sinon": "^9.0.2",
+    "socket.io": "^1.7.4",
+    "socket.io-client": "^1.7.4",
+    "typescript": "^3.6.4",
+    "utf8": "^3.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "export BROWSER=none && react-scripts start",
+    "start-electron": "export ELECTRON_START_URL=http://localhost:3000 && electron .",
+    "build-electron": "mkdir -p build/src && cp -r electron/. build/electron && cp -r src/shared/. build/src/shared",
+    "package": "electron-builder build --mac --win -c.extraMetadata.main=build/electron/main.js --publish never",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "build": {
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "publish": {
+      "provider": "github",
+      "repo": "electron-cra-example",
+      "owner": "johndyer24"
+    },
+    "mac": {
+      "icon": "build/icons/mac/icon.icns"
+    },
+    "win": {
+      "icon": "build/icons/win/icon.ico"
+    }
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +110,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "electron": "^11.0.2",
+    "electron-builder": "^22.9.1"
   }
 }

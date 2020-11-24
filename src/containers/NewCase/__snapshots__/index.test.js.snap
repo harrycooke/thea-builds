@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewCase NewCase should render correctly in "debug" mode 1`] = `[Function]`;
+
+exports[`NewCase should render with given state from Redux store 1`] = `undefined`;
