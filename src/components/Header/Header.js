@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 import { getNumOfNewMessage } from "../../actions/caseAction";
+import Update from "./Update";
+
 import {
   AppBar,
   Toolbar,
@@ -229,8 +231,10 @@ export class Header extends React.Component {
     const open = Boolean(anchorEl);
 
     return (
-      
+      <div>
+
       <AppBar position="fixed">
+      <Update/>
               {/* <div>
         {['left', 'right', 'top', 'bottom'].map((anchor) => (
           <React.Fragment key={anchor}>
@@ -454,6 +458,7 @@ export class Header extends React.Component {
           </Hidden>
         </Toolbar>
       </AppBar>
+      </div>
     );
   }
 };

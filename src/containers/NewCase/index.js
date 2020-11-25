@@ -64,19 +64,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const {ipcRenderer, remote, desktopCapturer, shell, nativeImage} = window.require('electron');
 
-const {getAppIconListByPid} = require('node-mac-app-icon');
-const {getWindows, activateWindow} = require('mac-windows');
 
-//const { ipcRenderer } = window; 
-
-//Delete??
-const getOpenWindows = async () => {
-  const {getWindowList} = remote.require('./windows');
-  var path = require('path');
-  console.log(path.resolve('./electron/windows.js'));
-  const windows = await getWindowList();
-  return windows
-};
 
 const StyledMenuItem = withStyles((theme) => ({
   root: {
@@ -121,12 +109,7 @@ export class NewCase extends React.Component {
 
     this.goBack = this.goBack.bind(this);
     this.removeFile = this.removeFile.bind(this);
-    ipcRenderer.send(channels.APP_INFO);
-    ipcRenderer.on(channels.APP_INFO, (event, arg) => {
-      ipcRenderer.removeAllListeners(channels.APP_INFO);
-      const { appName, appVersion } = arg;
-      this.setState({ appName, appVersion });
-    });
+
   }
 
 
@@ -158,8 +141,6 @@ export class NewCase extends React.Component {
       open: false,
       anchorEl: null,
       windows: [],
-      appName: '',
-      appVersion: '',
     }
     return initialState;
   }
@@ -173,7 +154,6 @@ export class NewCase extends React.Component {
     } else {
       console.log(`id===`, this.props.currentDraft)
     }
-    getOpenWindows();
     this.getWindowsList();
     if(this.props.case.patientList && this.props.case.patientList.length != 0){
       this.setState({patientList: this.props.case.patientList});
@@ -676,8 +656,6 @@ export class NewCase extends React.Component {
       patientList,
       open,
       anchorEl,
-      appName,
-      appVersion,
     } = this.state;
     // console.log(patientList);
 
@@ -723,16 +701,6 @@ export class NewCase extends React.Component {
               <Typography className={classes.headText}>
                 Create Case                                                     
               </Typography>
-                      <p>{appName} version {appVersion}</p>
-              <div id="notification" class="hidden">
-                <p id="message"></p>
-                <button id="close-button" onClick="closeNotification()">
-                  Close
-                </button>
-                <button id="restart-button" onClick="restartApp()" class="hidden">
-                  Restart
-                </button>
-              </div>
               <Divider />
                 <div style={{
                   paddingRight: "3em",

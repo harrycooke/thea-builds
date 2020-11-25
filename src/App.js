@@ -42,9 +42,13 @@ import Account from "./containers/Account";
 import Import from "./containers/Import";
 import PDF from "./containers/PDF";
 import IdleTimer from 'react-idle-timer'
+//import Update from "./update";
+
+
 
 import { channels } from './shared/constants';
-const { ipcRenderer } = window; 
+//const { ipcRenderer } = window; 
+const {ipcRenderer, remote, desktopCapturer, shell, nativeImage} = window.require('electron');
 
 //This is a new testing comment
 // random comment here 
@@ -109,6 +113,13 @@ class App extends Component {
     super(props)
     this.idleTimer = null
     this.onIdle = this._onIdle.bind(this)
+    ipcRenderer.send(channels.APP_INFO);
+    ipcRenderer.on(channels.APP_INFO, (event, arg) => {
+      ipcRenderer.removeAllListeners(channels.APP_INFO);
+      const { appName, appVersion } = arg;
+      console.log("got version "+ appVersion)
+      //this.setState({ appName, appVersion });
+    });
   }
 
   _onIdle(e) {
@@ -120,6 +131,7 @@ class App extends Component {
   render() {
 
     return (
+                      
       <MuiThemeProvider theme={THEME}>
         <CssBaseline />
         <div style={{ minHeight: "100vh" }}>
@@ -127,6 +139,7 @@ class App extends Component {
             ref={ref => { this.idleTimer = ref }}
             onIdle={this.onIdle}
             timeout={1000 * 60 * 30} />
+
           <Router>
             <Switch>
               <AdminRoute path="/pdf_:channel_id" component={PDF} />
@@ -172,6 +185,7 @@ class App extends Component {
             </Switch>
           </Router>
         </div>
+
       </MuiThemeProvider>
     );
   }
