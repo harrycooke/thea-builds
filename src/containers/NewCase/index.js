@@ -55,17 +55,19 @@ import axios from 'axios';
 import MomentUtils from "@date-io/moment";
 import moment from "moment";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { channels } from '../../shared/constants';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const {remote, desktopCapturer, shell, nativeImage} = window.require('electron');
+const {ipcRenderer, remote, desktopCapturer, shell, nativeImage} = window.require('electron');
 
 const {getAppIconListByPid} = require('node-mac-app-icon');
 const {getWindows, activateWindow} = require('mac-windows');
 
+//const { ipcRenderer } = window; 
 
 //Delete??
 const getOpenWindows = async () => {
@@ -119,6 +121,12 @@ export class NewCase extends React.Component {
 
     this.goBack = this.goBack.bind(this);
     this.removeFile = this.removeFile.bind(this);
+    ipcRenderer.send(channels.APP_INFO);
+    ipcRenderer.on(channels.APP_INFO, (event, arg) => {
+      ipcRenderer.removeAllListeners(channels.APP_INFO);
+      const { appName, appVersion } = arg;
+      this.setState({ appName, appVersion });
+    });
   }
 
 
@@ -150,6 +158,8 @@ export class NewCase extends React.Component {
       open: false,
       anchorEl: null,
       windows: [],
+      appName: '',
+      appVersion: '',
     }
     return initialState;
   }
@@ -666,7 +676,8 @@ export class NewCase extends React.Component {
       patientList,
       open,
       anchorEl,
-
+      appName,
+      appVersion,
     } = this.state;
     // console.log(patientList);
 
@@ -712,6 +723,16 @@ export class NewCase extends React.Component {
               <Typography className={classes.headText}>
                 Create Case                                                     
               </Typography>
+                      <p>{appName} version {appVersion}</p>
+              <div id="notification" class="hidden">
+                <p id="message"></p>
+                <button id="close-button" onClick="closeNotification()">
+                  Close
+                </button>
+                <button id="restart-button" onClick="restartApp()" class="hidden">
+                  Restart
+                </button>
+              </div>
               <Divider />
                 <div style={{
                   paddingRight: "3em",
